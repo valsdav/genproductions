@@ -52,6 +52,7 @@ import time
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import math
+import random
 
 
 # ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
@@ -876,6 +877,18 @@ def produceEvents (nevents, ngenerations, debugging=True):
     os.chdir ("generations")
 
     execute ('cp ../'+ phantomfolder +'/tools/gendir.scr .', debugging)
+    #Replace randomly the seeds in the gendir.scr script
+    genscript_file = open("gendir.scr", "r")
+    genscript_text = genscript_file.read()
+    genscript_file.close()
+    for i in range(2, 101):
+        # Use as a seed a big negative integer as in Phantom instructions
+        seed = - random.randint(1000000, 99999999)
+        genscript_text = re.sub(r'RAN\[{0}\]=.*\n'.format(i), 'RAN[{0}]={1}\n'.format(i,seed), genscript_text)
+    genscript_file = open("gendir.scr", "w")
+    genscript_file.write(genscript_text)
+    genscript_file.close()
+
     # Copying the r_GEN.in prepared in the gridpack
     # changing the EVENTSNUM and SEED variable and fixing the vegas files path
     rin = open("../r_GEN.in", "r")
