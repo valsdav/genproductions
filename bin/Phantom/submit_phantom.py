@@ -877,17 +877,23 @@ def produceEvents (nevents, ngenerations, debugging=True):
     os.chdir ("generations")
 
     execute ('cp ../'+ phantomfolder +'/tools/gendir.scr .', debugging)
-    #Replace randomly the seeds in the gendir.scr script
-    genscript_file = open("gendir.scr", "r")
-    genscript_text = genscript_file.read()
-    genscript_file.close()
-    for i in range(2, 101):
+
+    # Create a new list of random seeds inside the gendir script for every production
+    seeds_lines = [ "RAN[1]=-123456789" ]
+    for i in range(2, ngenerations+1):
         # Use as a seed a big negative integer as in Phantom instructions
         seed = - random.randint(1000000, 99999999)
-        genscript_text = re.sub(r'RAN\[{0}\]=.*\n'.format(i), 'RAN[{0}]={1}\n'.format(i,seed), genscript_text)
-    genscript_file = open("gendir.scr", "w")
-    genscript_file.write(genscript_text)
-    genscript_file.close()
+        seeds_lines.append("RAN[{0}]={1}".format(i,seed))
+
+    with open("gendir.scr", "r") as genscript_file:
+        genscript_text = genscript_file.read()
+    # Match the first and last seed to put inside the file the new complete list
+    first_seed = re.search(r'RAN\[1\]=.*\n',genscript_text)
+    last_seed = re.search(r'RAN\[100\]=.*\n',genscript_text)
+    # Insert the new list
+    genscript_text = genscript_text[:first_seed.start()] + "\n".join(seeds_lines) + genscript_text[last_seed.end():]
+    with open("gendir.scr", "w") as genscript_file:
+        genscript_file.write(genscript_text)
 
     # Copying the r_GEN.in prepared in the gridpack
     # changing the EVENTSNUM and SEED variable and fixing the vegas files path
@@ -896,7 +902,7 @@ def produceEvents (nevents, ngenerations, debugging=True):
     rin_text = rin.read()
     # Fix variables
     rin_text = rin_text.replace ("EVENTSNUM", str(nevents))
-    rin_text = rin_text.replace ("RANDOMSEED", "123456789")
+    rin_text = rin_text.replace ("RANDOMSEED", "123456789")  # wildcard value for gendir.scr script
     # Match nfiles section
     match = re.search( r"nfiles\s*(?P<lines>\d+)\n", rin_text)
     rout.write(rin_text[:match.end()])
@@ -924,8 +930,16 @@ def produceEvents (nevents, ngenerations, debugging=True):
     cmssw = config.get ('general', 'CMSSW')
     modifySubmitfileCMSSWCompiler ('gen1/run', "", "", cmssw, "sh", scram_arch)
 
-    # Now run the phantom tool to generate the folders
+    # Run the phantom tool to generate the folders
     execute ("./gendir.scr -l CERN -q 1nw -d "+ str(ngenerations) + " -i `pwd`", debugging)
+
+    # Change the seed for the gen1, otherwise it's always -123456789
+    with open("gen1/r.in", "r") as gen1file:
+        gen1text = gen1file.read()
+    gen1text = re.sub(r'idum\s*-123456789', "idum "+ str(- random.randint(1000000, 99999999)), gen1text)
+    with open("gen1/r.in", "w") as gen1file:
+        gen1file.write(gen1text)
+
     # We have now a submit file create, we have to add the CMSSW activation at the beginning
 #    modifySubmitfileCMSSWCompiler(os.getcwd() +'/submitfile', "", "", cmssw, "sh", scram_arch, cmssw_path="../")
 
