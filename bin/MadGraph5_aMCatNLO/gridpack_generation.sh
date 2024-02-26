@@ -141,7 +141,7 @@ make_gridpack () {
       if [ ! -d ${GEN_FOLDER} ]; then
         mkdir ${GEN_FOLDER}
       fi
-    
+     
       cd $GEN_FOLDER
     
       export SCRAM_ARCH=${scram_arch}
@@ -261,7 +261,7 @@ make_gridpack () {
           #get needed BSM model
           if [[ $model = *[!\ ]* ]]; then
             echo "Loading extra model $model"
-            wget --no-check-certificate https://cms-project-generators.web.cern.ch/cms-project-generators/$model	
+            wget --no-check-certificate https://dvalsecc.web.cern.ch/dvalsecc/EFTstudies/models/$model	
             cd models
             if [[ $model == *".zip"* ]]; then
               unzip ../$model
