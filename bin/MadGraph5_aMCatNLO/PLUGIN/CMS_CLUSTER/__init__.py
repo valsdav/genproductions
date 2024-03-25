@@ -225,6 +225,7 @@ class CMSCondorCluster(CondorCluster):
                   %(requirement)s
                   getenv=True
                   %(leave_in_queue)s
+                  MY.WantOS = "el7"
                   
                   +JobFlavour = "%(job_flavour)s"
                   
