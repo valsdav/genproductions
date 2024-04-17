@@ -1,0 +1,9 @@
+Starting job on  Tue Feb 13 13:40:40 CET 2024
+Running on  Linux lxplus912.cern.ch 5.14.0-362.18.1.el9_3.x86_64 #1 SMP PREEMPT_DYNAMIC Wed Jan 3 15:54:45 EST 2024 x86_64 x86_64 x86_64 GNU/Linux
+System release  CentOS Linux release 7.9.2009 (Core)
+name: cards/production/13TeV/ttbb-SMEFTsim-topU3l/proc_card.dat
+carddir: 
+queue: local
+scram_arch: slc7_amd64_gcc700
+cmssw_version: CMSSW_10_6_19
+/afs/cern.ch/work/d/dvalsecc/private/test_EFT_gridpack/genproductions/bin/MadGraph5_aMCatNLO//cards/production/13TeV/ttbb-SMEFTsim-topU3l/proc_card.dat_proc_card.dat  does not exist!

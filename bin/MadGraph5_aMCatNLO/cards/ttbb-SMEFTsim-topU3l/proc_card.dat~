@@ -1,0 +1,9 @@
+set stdout_level DEBUG
+
+import model SMEFTsim_topU3l_MwScheme_UFO-ttHbb_noCtG_massless
+
+generate p p > t t~ b b~ QED=2 NP<=1 SMHLOOP=0 NProp=0
+
+
+
+output ttbb-SMEFTsim-topU3l
