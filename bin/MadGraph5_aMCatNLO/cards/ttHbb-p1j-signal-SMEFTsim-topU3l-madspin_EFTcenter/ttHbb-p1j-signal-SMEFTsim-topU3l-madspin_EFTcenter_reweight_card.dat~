@@ -1,4 +1,6 @@
 change rwgt_dir rwgt
+change helicity False
+ 
 launch --rwgt_name=rw0000
 set smeft 11 0
 set smeft 17 0

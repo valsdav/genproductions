@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x 
 
 ##########################################################################################
 #GENERAL INSTRUCTIONS:                                                                   #
@@ -280,7 +280,8 @@ make_gridpack () {
           #get needed BSM model
           if [[ $model = *[!\ ]* ]]; then
             echo "Loading extra model $model"
-            wget --no-check-certificate https://cms-project-generators.web.cern.ch/cms-project-generators/$model	
+	    wget --no-check-certificate https://dvalsecc.web.cern.ch/dvalsecc/EFTstudies/models/$model
+            #wget --no-check-certificate https://cms-project-generators.web.cern.ch/cms-project-generators/$model	
             cd models
             if [[ $model == *".zip"* ]]; then
               unzip ../$model
