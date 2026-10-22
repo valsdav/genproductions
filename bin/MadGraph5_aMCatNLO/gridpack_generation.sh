@@ -425,7 +425,7 @@ make_gridpack () {
           echo "Reusing existing process directory - be careful!"
         else
           echo "Reusing an existing process directory ${name} is not actually supported in production at the moment.  Please clean or move the directory and start from scratch."
-          if [ "${BASH_SOURCE[0]}" != "${0}" ]; then return 1; else exit 1; fi
+          #if [ "${BASH_SOURCE[0]}" != "${0}" ]; then return 1; else exit 1; fi
         fi
       fi
     
